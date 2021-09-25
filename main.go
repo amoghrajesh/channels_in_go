@@ -21,6 +21,14 @@ func main() {
 	for _, link := range links {
 		go checkLink(link, c)
 	}
+
+	// receiving messages from a channel is a blocking call
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+	fmt.Println(<-c)
+
 	fmt.Println(<-c)
 }
 
