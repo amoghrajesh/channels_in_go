@@ -14,8 +14,10 @@ func main() {
 		"http://golang.org",
 	}
 
+	// this wont work because main function has higher weightage which goes off without caring if child routine
+	// completed or not.
 	for _, link := range links {
-		checkLink(link)
+		go checkLink(link)
 	}
 }
 
