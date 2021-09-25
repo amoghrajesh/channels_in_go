@@ -20,7 +20,7 @@ func main() {
 }
 
 func checkLink(link string) {
-	_, err := http.Get(link)
+	_, err := http.Get(link) // blocking call because it takes some time to run
 	if err != nil {
 		fmt.Println(link, "might be down!")
 		return
