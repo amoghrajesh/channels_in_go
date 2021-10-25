@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 
 	c := make(chan string)
 
-	// this wont work because main function has higher weightage which goes off without caring if child routine
+	// this won't work because main function has higher weightage which goes off without caring if child routine
 	// completed or not.
 	for _, link := range links {
 		go checkLink(link, c)
@@ -24,11 +25,15 @@ func main() {
 
 	// receiving messages from a channel is a blocking call
 	for l := range c {
-		go checkLink(l, c)
+		go func() {
+			time.Sleep(5 * time.Second)
+			checkLink(l, c)
+		}()
 	}
 }
 
 func checkLink(link string, c chan string) {
+	time.Sleep(time.Second)
 	_, err := http.Get(link) // blocking call because it takes some time to run
 	if err != nil {
 		fmt.Println(link, "might be down!")
