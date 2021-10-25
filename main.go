@@ -23,8 +23,8 @@ func main() {
 	}
 
 	// receiving messages from a channel is a blocking call
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+	for l := range c {
+		go checkLink(l, c)
 	}
 }
 
@@ -32,9 +32,9 @@ func checkLink(link string, c chan string) {
 	_, err := http.Get(link) // blocking call because it takes some time to run
 	if err != nil {
 		fmt.Println(link, "might be down!")
-		c <- "Might be down I think"
+		c <- link
 		return
 	}
 	fmt.Println(link, "is responding to traffic & is ok!")
-	c <- "Yep its up"
+	c <- link
 }
